@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/jchavannes/btcd/chaincfg/chainhash"
+	"github.com/jchavannes/btcd/wire"
 )
 
 // OutOfRangeError describes an error due to accessing an element that is out
@@ -66,27 +66,6 @@ func (b *Block) Bytes() ([]byte, error) {
 
 	// Cache the serialized bytes and return them.
 	b.serializedBlock = serializedBlock
-	return serializedBlock, nil
-}
-
-// BytesNoWitness returns the serialized bytes for the block with transactions
-// encoded without any witness data.
-func (b *Block) BytesNoWitness() ([]byte, error) {
-	// Return the cached serialized bytes if it has already been generated.
-	if len(b.serializedBlockNoWitness) != 0 {
-		return b.serializedBlockNoWitness, nil
-	}
-
-	// Serialize the MsgBlock.
-	var w bytes.Buffer
-	err := b.msgBlock.SerializeNoWitness(&w)
-	if err != nil {
-		return nil, err
-	}
-	serializedBlock := w.Bytes()
-
-	// Cache the serialized bytes and return them.
-	b.serializedBlockNoWitness = serializedBlock
 	return serializedBlock, nil
 }
 
